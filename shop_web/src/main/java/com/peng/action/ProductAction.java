@@ -207,7 +207,7 @@ public class ProductAction {
             cart = new HashMap<Integer, CartItem>();
             cart.put(productId, deleteCart.get(productId));
         } else {
-            //判断是否删除过该商品
+            //判断以前是否删除过该商品
             if (cart.containsKey(productId)) {
                 cartItem = cart.get(productId);
                 cartItem.setMount(cartItem.getMount() + 1);
