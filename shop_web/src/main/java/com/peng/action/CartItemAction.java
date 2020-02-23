@@ -76,7 +76,7 @@ public class CartItemAction {
             cart.put(productId, cartItem);
             session.setAttribute("cart", cart);
         } else {
-            //判断该商品是否添加过
+            //判断该商品是否以前添加过
             if (cart.containsKey(productId)) {
                 //找到该购物车对象
                 cartItem = cart.get(productId);
