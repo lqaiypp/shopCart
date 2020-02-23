@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <package name="myInterceptor" extends="struts-default" namespace="/myInterceptor">
+        <interceptors>
+            <!-- 拦截器声明配置 -->
+            <interceptor name="loginInterceptor" class="com.peng.interceptor.LoginInterceptor">
+            </interceptor>
+            <!-- 拦截器栈配置 -->
+            <interceptor-stack name="myDefaultStack">
+                <!-- 设置系统默认的拦截器栈 -->
+                <interceptor-ref name="defaultStack"></interceptor-ref>
+                <interceptor-ref name="loginInterceptor"></interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+    </package>
+
+    <package name="user" extends="struts-default" namespace="/user">
+        <action name="user_*" class="com.peng.action.UserAction" method="{1}">
+            <result name="showProduct" type="redirectAction">
+                <param name="namespace">/pro</param>
+                <param name="actionName">pro_showAllProduct</param><!-- 跳转到首页 -->
+            </result>
+            <result name="login" type="redirect">/view/LoginView.jsp</result><!-- 密码错误回到登陆界面 -->
+            <result name="regist" type="redirect">/view/LoginView.jsp</result><!-- 注册完成回到登陆界面 -->
+            <result name="safeOut" type="redirect">/view/LoginView.jsp</result>
+        </action>
+    </package>
+
+    <package name="pro" extends="myInterceptor" namespace="/pro">
+
+        <global-results>
+            <result name="login" type="redirect">/view/LoginView.jsp</result>
+        </global-results>
+
+        <action name="pro_*" class="com.peng.action.ProductAction" method="{1}">
+
+            <!-- 拦截器引用 -->
+            <interceptor-ref name="myDefaultStack"></interceptor-ref>
+            <result name="addCart" type="redirect">/view/AddCarSuccess.jsp</result>
+            <result name="DeleteOne" type="redirect">/view/ShopCarView.jsp</result>
+            <result name="UpdateMount" type="redirect">/view/ShopCarView.jsp</result>
+            <result name="RecoveryOneCart" type="redirect">/view/ShopCarView.jsp</result>
+        </action>
+
+        <action name="pro_showAllProduct" class="com.peng.action.ProductAction" method="showAllProduct">
+            <result name="showProduct">/view/QueryProductView.jsp</result> <!--分页查询所有  -->
+        </action>
+    </package>
+
+</struts>
